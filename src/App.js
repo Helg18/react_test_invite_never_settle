@@ -1,7 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import API from './services/axios';
+
+// App Partials
+import Header from "./components/Header/Header";
+import Body from "./components/Body/Body";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   API.getAll().then(data => {
@@ -10,10 +14,10 @@ function App() {
   );
   return (
     <div className="App">
-      <header className="App-header">
-        <img width="100vh" src={logo} className="App-logo" alt="logo" />
-      </header>
-    </div>
+        <Header />
+        <Body />
+        <Footer />
+     </div>
   );
 }
 
