@@ -6,6 +6,7 @@ const request = axios.create({
 });
 
 class Api {
+    // Fetch all players
     getAll= async () => request.get()
         .then(function (response) {
 
@@ -14,4 +15,5 @@ class Api {
         });
 }
 
+// Exporting a new Api object to be used
 export default new Api();
