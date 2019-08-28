@@ -131,7 +131,7 @@ class Table extends Component{
         }
 
         let players = this.state.selectedPlayers.filter(p => {
-            return position === p.position;
+            return position.toString().toLowerCase() === p.position.toString().toLowerCase();
         });
         this.setState({
             selectedPlayers: players
@@ -167,15 +167,24 @@ class Table extends Component{
                 <div className="row mb-4">
                     <form className="container form-player" onSubmit={this.onSubmit}>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
-                            <input type="text" className="form-control" placeholder="Player name" ref="name"/>
+                            <div className="form-group">
+                                <input type="text" className="form-control" placeholder="Player name" ref="name" pattern="[a-zA-Z]*"/>
+                                <label className="annotation">Must be String</label>
+                            </div>
                         </div>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
-                            <select className="form-control" placeholder="Position" ref="position">
-                                { positions }
-                            </select>
+                            <div className="form-group">
+                                <select className="form-control" placeholder="Position" ref="position">
+                                    { positions }
+                                </select>
+                                <label className="annotation">Must be listed</label>
+                            </div>
                         </div>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
-                            <input type="number" className="form-control" placeholder="Age" ref="age" min="18" max="45"/>
+                            <div className="form-group">
+                                <input type="number" className="form-control" placeholder="Age" ref="age" min="18" max="45" pattern="[0-9]*"/>
+                                <label className="annotation">Must be numeric between 18 - 45</label>
+                            </div>
                         </div>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
                             <button type="reset" className="btn btn-outline-danger mr-2" onClick={this.clearForm}>Clear Fields</button>
@@ -184,9 +193,13 @@ class Table extends Component{
                     </form>
                 </div>
                 <div className="row">
+                    <p className="showing-results col-sm-12 col-md-3 offset-md-9">
+                        Showing { this.state.selectedPlayers.length } results  of { this.state.players.length }
+                    </p>
                     <div className="table-responsive">
                         <table className="table table-striped table-hover">
                             <thead>
+
                             <tr>
                                 <td className="col-with-quarter"> Player</td>
                                 <td className="col-with-quarter"> Position</td>
