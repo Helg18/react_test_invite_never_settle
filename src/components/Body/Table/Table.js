@@ -101,6 +101,7 @@ class Table extends Component{
         this.filterByName(this.refs.name.value);
 
         // Filter by Position
+        this.filterByPosition(this.refs.position.value);
 
         // Filter by age
         this.filterByAge(this.refs.age.value)
@@ -115,6 +116,22 @@ class Table extends Component{
 
         let players = this.state.players.filter(p => {
             return p.name.toLowerCase().includes(name.toLowerCase())
+        });
+        this.setState({
+            selectedPlayers: players
+        });
+
+    }
+
+    // Filter by position on selected players
+    filterByPosition(position) {
+        // return null if position is empty
+        if (position === '') {
+            return null;
+        }
+
+        let players = this.state.selectedPlayers.filter(p => {
+            return position === p.position;
         });
         this.setState({
             selectedPlayers: players
