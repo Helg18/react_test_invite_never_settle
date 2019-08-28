@@ -15,12 +15,11 @@ class Table extends Component{
             players: [],
             positions: [],
             selectedPosition: '',
+            selectedPlayers: [],
         };
         this.fetchPlayers();
 
         this.onSubmit = this.onSubmit.bind(this);
-        this.nameChange = this.nameChange.bind(this);
-        this.ageChange = this.ageChange.bind(this);
     }
 
     // Fetch player from external resource
@@ -30,14 +29,16 @@ class Table extends Component{
             }
         );
         this.setState({
-            players: results,
             selectedPlayers: results
+        });
+        this.setState({
+            players: results
         });
     }
 
     // Set Player List
     playerList(){
-        const players = this.state.players;
+        const players = this.state.selectedPlayers;
         return players.map(d => {
             this.putPositionInList( d['position'] );
             return <tr key={ d['jerseyNumber'] }>
@@ -96,9 +97,6 @@ class Table extends Component{
         })
     }
 
-    ageChange(){}
-    nameChange(){}
-
     // Render component
     render() {
         // Get Lists
@@ -111,7 +109,7 @@ class Table extends Component{
                 <div className="row mb-4">
                     <form className="container form-player" onSubmit={this.onSubmit}>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
-                            <input type="text" className="form-control" placeholder="Player name" onChange={this.nameChange} ref="name"/>
+                            <input type="text" className="form-control" placeholder="Player name" ref="name"/>
                         </div>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
                             <select className="form-control" placeholder="Position" ref="position">
@@ -119,7 +117,7 @@ class Table extends Component{
                             </select>
                         </div>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
-                            <input type="number" className="form-control" placeholder="Age" onChange={this.ageChange} ref="age"/>
+                            <input type="number" className="form-control" placeholder="Age" ref="age"/>
                         </div>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
                             <button type="reset" className="btn btn-outline-danger mr-2">Clear Fields</button>
@@ -132,10 +130,10 @@ class Table extends Component{
                         <table className="table table-striped table-hover">
                             <thead>
                             <tr>
-                                <td>Player</td>
-                                <td>Position</td>
-                                <td>Nationality</td>
-                                <td>Age</td>
+                                <td className="col-with-quarter"> Player</td>
+                                <td className="col-with-quarter"> Position</td>
+                                <td className="col-with-quarter"> Nationality</td>
+                                <td className="col-with-quarter"> Age</td>
                             </tr>
                             </thead>
                             <tbody>
