@@ -87,7 +87,6 @@ class Table extends Component{
         })
     };
 
-
     // Submit form
     onSubmit(e) {
         e.preventDefault();
@@ -99,18 +98,39 @@ class Table extends Component{
         });
 
         // Filter by name
-        this.filterByName(this.refs.name.value)
+        this.filterByName(this.refs.name.value);
 
-        // Filter by Positio
+        // Filter by Position
 
         // Filter by age
-
+        this.filterByAge(this.refs.age.value)
     }
 
     // Filter by name on selected Players
     filterByName(name) {
+        // return null if name is empty
+        if (name === '') {
+            return null;
+        }
+
         let players = this.state.players.filter(p => {
             return p.name.toLowerCase().includes(name.toLowerCase())
+        });
+        this.setState({
+            selectedPlayers: players
+        });
+
+    }
+
+    // Filter by age on selected players
+    filterByAge(age) {
+        // return null if age is empty
+        if (age === '') {
+            return null;
+        }
+
+        let players = this.state.selectedPlayers.filter(a => {
+            return age === Table.ageCalculator(a.dateOfBirth).toString()
         });
         this.setState({
             selectedPlayers: players
@@ -138,7 +158,7 @@ class Table extends Component{
                             </select>
                         </div>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
-                            <input type="number" className="form-control" placeholder="Age" ref="age"/>
+                            <input type="number" className="form-control" placeholder="Age" ref="age" min="18" max="45"/>
                         </div>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
                             <button type="reset" className="btn btn-outline-danger mr-2" onClick={this.clearForm}>Clear Fields</button>
