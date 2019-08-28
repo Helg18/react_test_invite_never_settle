@@ -78,14 +78,15 @@ class Table extends Component{
     }
 
     // Clear form
-    clearForm() {
+    clearForm = () => {
         this.setState({
             selectedPlayers: this.state.players,
             name:'',
             age:'',
-            position:''
+            selectedPosition:''
         })
-    }
+    };
+
 
     // Submit form
     onSubmit(e) {
@@ -93,8 +94,28 @@ class Table extends Component{
         this.setState({
             name: this.refs.name.value,
             age: this.refs.age.value,
-            selectedPosition: this.refs.position.value
-        })
+            selectedPosition: this.refs.position.value,
+            selectedPlayers: this.state.players
+        });
+
+        // Filter by name
+        this.filterByName(this.refs.name.value)
+
+        // Filter by Positio
+
+        // Filter by age
+
+    }
+
+    // Filter by name on selected Players
+    filterByName(name) {
+        let players = this.state.players.filter(p => {
+            return p.name.toLowerCase().includes(name.toLowerCase())
+        });
+        this.setState({
+            selectedPlayers: players
+        });
+
     }
 
     // Render component
@@ -120,7 +141,7 @@ class Table extends Component{
                             <input type="number" className="form-control" placeholder="Age" ref="age"/>
                         </div>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
-                            <button type="reset" className="btn btn-outline-danger mr-2">Clear Fields</button>
+                            <button type="reset" className="btn btn-outline-danger mr-2" onClick={this.clearForm}>Clear Fields</button>
                             <button type="submit" className="btn btn-outline-info">Search</button>
                         </div>
                     </form>
