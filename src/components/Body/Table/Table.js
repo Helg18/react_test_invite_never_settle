@@ -1,15 +1,24 @@
 import React, {Component} from 'react';
 
+// SweetAlert
+import { withSwalInstance } from 'sweetalert2-react';
+import swal from 'sweetalert2';
+
 // Css
 import './Table.css'
 
 // Services
 import API from '../../../services/axios';
 
+const SweetAlert = withSwalInstance(swal);
+
 class Table extends Component{
     constructor(props) {
         super(props);
         this.state = {
+            showErrorStatus: false,
+            showErrorMsg: '',
+            showErrorTitle: '',
             name: '',
             age: '',
             players: [],
@@ -111,6 +120,18 @@ class Table extends Component{
     filterByName(name) {
         // return null if name is empty
         if (name === '') {
+            this.setState({ showErrorMsg: false });
+            return null;
+        }
+
+        // Validate name is string without numbers
+        const nameRegex = /[a-zA-Z]/;
+        if (!nameRegex.test(name)) {
+            this.setState({
+                showErrorMsg: 'Name must be a string',
+                showErrorTitle: 'Error',
+                showErrorStatus: true,
+            });
             return null;
         }
 
@@ -137,6 +158,16 @@ class Table extends Component{
             selectedPlayers: players
         });
 
+        // Validate if exists position into position list
+        if (players.length <= 0) {
+            this.setState({
+                showErrorMsg: 'Position must be into Position List',
+                showErrorTitle: 'Error',
+                showErrorStatus: true,
+            });
+            return null;
+        }
+
     }
 
     // Filter by age on selected players
@@ -145,6 +176,18 @@ class Table extends Component{
         if (age === '') {
             return null;
         }
+
+        // Validate name is string without numbers
+        const ageRegex = /[0-9]/;
+        if (!ageRegex.test(age)) {
+            this.setState({
+                showErrorMsg: 'Age must be a number',
+                showErrorTitle: 'Error',
+                showErrorStatus: true,
+            });
+            return null;
+        }
+
 
         let players = this.state.selectedPlayers.filter(a => {
             return age === Table.ageCalculator(a.dateOfBirth).toString()
@@ -164,6 +207,11 @@ class Table extends Component{
         // Render component
         return(
             <div>
+                <SweetAlert
+                    show={this.state.showErrorStatus}
+                    title={this.state.showErrorTitle}
+                    text={this.state.showErrorMsg}
+                    onConfirm={() => this.setState({ showErrorStatus: false })} />
                 <div className="row mb-4">
                     <form className="container form-player" onSubmit={this.onSubmit}>
                         <div className="col-sm-12 col-md-3 col-xl-3 col-lg-3 p-2">
@@ -199,7 +247,6 @@ class Table extends Component{
                     <div className="table-responsive">
                         <table className="table table-striped table-hover">
                             <thead>
-
                             <tr>
                                 <td className="col-with-quarter"> Player</td>
                                 <td className="col-with-quarter"> Position</td>
